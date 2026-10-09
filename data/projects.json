@@ -1,0 +1,83 @@
+{
+  "author": {
+    "name": "Gustavo Guanabara",
+    "title": "Criador, Educador & Tecnólogo",
+    "avatar": "images/guanabara-gafanhoto.png",
+    "logo": "images/logo-gafanhoto.png",
+    "bio": "Acompanhe o nosso trabalho para ficar sempre atualizado com as novidades. Os projetos apresentados aqui serão construídos do zero, usando nossa técnica.",
+    "socialLinks": [
+      {
+        "platform": "YouTube",
+        "url": "https://youtube.com/cursoemvideo",
+        "icon": "youtube",
+        "description": "Aulas, tutoriais de programação e tecnologia"
+      },
+      {
+        "platform": "Instagram",
+        "url": "https://instagram.com/gustavoguanabara",
+        "icon": "instagram",
+        "description": "Bastidores, novidades e o dia a dia da comunidade tech"
+      },
+      {
+        "platform": "GitHub",
+        "url": "https://github.com/gustavoguanabara",
+        "icon": "github",
+        "description": "Repositórios, códigos abertos e projetos experimentais"
+      },
+      {
+        "platform": "Outros",
+        "url": "https://allmylinks.com/cursoemvideo",
+        "icon": "outros",
+        "description": "Outras maneiras de acompanhar o que está rolando"
+      }
+    ]
+  },
+  "closing": {
+    "logo": "images/logo-gafanhoto.png",
+    "title": "Construindo a proxima geração Dev",
+    "subtitle": "Acompanhe o nosso trabalho para ficar sempre atualizado com as novidades. Os projetos apresentados aqui serão construídos do zero, usando nossa técnica."
+  },
+  "hero": {
+    "badge": "PORTFÓLIO VIBECODING // 2026",
+    "title": "GuIA do Desenvolvedor Moderno",
+    "subtitle": "Projetos reais, feitos 100% com vibe coding sensato e muita criatividade para os iniciantes em Tecnologia",
+    "authorTag": "Criado por Gustavo Guanabara",
+    "avatarImage": "images/guanabara-gafanhoto.png",
+    "logoImage": "images/logo-gafanhoto.png"
+  },
+  "projects": [
+    {
+      "id": "guanaboy",
+      "title": "GuanaBoy",
+      "badge": "01 // ARCADE & PLATAFORMA",
+      "element3D": "images/guanaboy-elemento.png",
+      "backgroundImage": "images/guanaboy-background.png",
+      "backgroundColor": "#182030",
+      "description": "Um não-tão-emocionante jogo retrô de salto infinito, onde você assume o controle do personagem em um cenário vibrante e desafiador. Salte sobre obstáculos dinâmicos, teste seus reflexos em alta velocidade e quebre seus próprios recordes nesta aventura nostálgica.",
+      "projectUrl": "https://gustavoguanabara.github.io/guana-boy/",
+      "buttonLabel": "Jogar GuanaBoy"
+    },
+    {
+      "id": "torre-hanoi",
+      "title": "Torre de Hanói",
+      "badge": "02 // RACIOCÍNIO & ALGORITMOS",
+      "element3D": "images/torre-hanoi-elemento.png",
+      "backgroundImage": "images/torre-hanoi-background.png",
+      "backgroundColor": "#23182b",
+      "description": "O clássico jogo de raciocínio lógico que desafia a mente a compreender a sequência exata para solucionar problemas complexos. Exercite o pensamento analítico e algoritmos recursivos movendo os discos entre as hastes sem sobrepor um disco maior sobre um menor.",
+      "projectUrl": "https://gustavoguanabara.github.io/torre-hanoi/",
+      "buttonLabel": "Desafiar a Torre"
+    },
+    {
+      "id": "simulador-wifi",
+      "title": "Simulador de Wi-Fi",
+      "badge": "03 // REDES & FÍSICA APLICADA",
+      "element3D": "images/simulador-wifi-elemento.png",
+      "backgroundImage": "images/simulador-wifi-background.png",
+      "backgroundColor": "#132338",
+      "description": "Um ambiente interativo para teste e visualização de propagação de redes sem fio em espaços arquitetônicos. Mapeie visualmente a dissipação de radiofrequência, identifique barreiras físicas e descubra exatamente onde o sinal enfraquece para otimizar qualquer conexão.",
+      "projectUrl": "https://gustavoguanabara.github.io/simulador-wifi/",
+      "buttonLabel": "Explorar o Simulador"
+    }
+  ]
+}

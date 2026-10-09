@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self';">
+
+  <title>Gustavo Guanabara — GuIA do Desenvolvedor Moderno</title>
+  <meta name="description" content="GuIA do Desenvolvedor Moderno: Projetos reais, feitos 100% com vibe coding sensato e muita criatividade para os iniciantes em Tecnologia por Gustavo Guanabara.">
+  <meta name="author" content="Gustavo Guanabara">
+  <meta name="theme-color" content="#080b12">
+
+  <!-- Folhas de Estilos -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Barra de Progresso Ultrafina Fixa no Topo (RN-005) -->
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- Tela de Pré-carregamento Assíncrono com Feedback Visual -->
+  <div id="preloader" role="status" aria-live="polite">
+    <div class="preloader-spinner"></div>
+    <div class="preloader-text">Inicializando experiência...</div>
+    <div class="preloader-bar-container">
+      <div class="preloader-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- Motor Gráfico Canvas 2D em Tela Cheia -->
+  <canvas id="parallax-canvas" aria-hidden="true"></canvas>
+
+  <!-- Indicador de Navegação Lateral Rápida (Dots) -->
+  <nav id="nav-dots" aria-label="Navegação entre projetos"></nav>
+
+  <!-- Container de Cenas Semânticas -->
+  <main id="scenes-container">
+
+    <!-- Tela Inicial: Capa Hero com Efeito Parallax (RN-001 / RN-002) -->
+    <section class="scene hero-scene" id="scene-hero" data-index="0">
+      <div class="hero-container">
+
+        <!-- Coluna de Conteúdo Editorial -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="hero-badge-pulse"></span>
+            PORTFÓLIO VIBECODING // 2026
+          </div>
+          <h1 class="hero-title" aria-label="GuIA do Desenvolvedor Moderno">
+            Gu<span class="highlight-ai">IA</span> do Desenvolvedor Moderno
+          </h1>
+          <p class="hero-subtitle">
+            Projetos reais, feitos 100% com vibe coding sensato e muita criatividade para os iniciantes em Tecnologia
+          </p>
+          <div class="hero-author-tag">
+            <span>Criado por <strong>Gustavo Guanabara</strong></span>
+          </div>
+        </div>
+
+        <!-- Palco Visual: Foto Gustavo Guanabara e Logo Gafanhoto em Parallax Traseiro -->
+        <div class="hero-visual" id="hero-visual-stage">
+          <div class="hero-glow-aura" aria-hidden="true"></div>
+
+          <!-- Camada Traseira: Logo Gafanhoto (Efeito Parallax de Fundo) -->
+          <div class="hero-logo-layer" id="hero-logo-layer">
+            <img src="images/logo-gafanhoto.png" alt="Logo Gafanhoto" class="hero-logo-img" />
+          </div>
+
+          <!-- Camada Frontal: Foto Gustavo Guanabara (Efeito Parallax e Levitação) -->
+          <div class="hero-avatar-layer" id="hero-avatar-layer">
+            <img src="images/guanabara-gafanhoto.png" alt="Gustavo Guanabara com Capuz Gafanhoto" class="hero-avatar-img" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Container dos Projetos (Renderizados dinamicamente a partir de data/projects.json) -->
+    <div id="projects-container"></div>
+
+  </main>
+
+  <!-- Script Modular ES6 Nativo -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
