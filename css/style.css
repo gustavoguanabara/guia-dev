@@ -1,0 +1,994 @@
+/* ==========================================================================
+   ESTILOS PRINCIPAIS — PORTFÓLIO PARALLAX IMERSIVO
+   Projetos Vibecoding (GuanaBoy, Torre de Hanói, Simulador Wi-Fi)
+   ========================================================================== */
+
+:root {
+  --bg-dark: #080b12;
+  --bg-card: rgba(14, 20, 33, 0.75);
+  --bg-card-hover: rgba(20, 28, 46, 0.85);
+  --border-card: rgba(255, 255, 255, 0.1);
+  --border-card-highlight: rgba(0, 242, 254, 0.35);
+
+  --accent-cyan: #00f2fe;
+  --accent-blue: #4facfe;
+  --accent-purple: #9d4edd;
+  --accent-magenta: #f72585;
+  --accent-gold: #ffd166;
+
+  --text-primary: #f0f6fc;
+  --text-secondary: #9aa5b5;
+  --text-muted: #6e7681;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   BARRA DE PROGRESSO ULTRAFINA (RN-005)
+   ========================================================================== */
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3.5px;
+  z-index: 9999;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue), var(--accent-purple), var(--accent-magenta));
+  transform-origin: left;
+  transform: scaleX(0);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.8), 0 0 24px rgba(157, 78, 221, 0.4);
+  pointer-events: none;
+  transition: transform 0.05s linear;
+}
+
+/* ==========================================================================
+   TELA DE PRÉ-CARREGAMENTO (PRELOADER)
+   ========================================================================== */
+
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background-color: var(--bg-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+}
+
+#preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-spinner {
+  width: 56px;
+  height: 56px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
+  border-top-color: var(--accent-cyan);
+  border-right-color: var(--accent-blue);
+  border-radius: 50%;
+  animation: spin 0.9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+}
+
+.preloader-text {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+}
+
+.preloader-bar-container {
+  width: 220px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.preloader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  transition: width 0.3s ease;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   CANVAS FIXO 2D COM EFEITO PARALLAX
+   ========================================================================== */
+
+#parallax-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
+  pointer-events: none;
+  display: block;
+}
+
+/* ==========================================================================
+   INDICADOR DE NAVEGAÇÃO LATERAL (DOTS)
+   ========================================================================== */
+
+#nav-dots {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.nav-dot {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.nav-dot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+}
+
+.nav-dot:hover,
+.nav-dot.is-active {
+  background: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  transform: scale(1.35);
+  box-shadow: 0 0 12px var(--accent-cyan);
+}
+
+.nav-dot-tooltip {
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  padding: 0.35rem 0.75rem;
+  background: rgba(14, 20, 33, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.nav-dot:hover .nav-dot-tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ==========================================================================
+   CONTAINER PRINCIPAL DE CONTEÚDO E CENAS
+   ========================================================================== */
+
+#scenes-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+.scene {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   TELA INICIAL: HERO SCENE (RN-001 / RN-002)
+   ========================================================================== */
+
+.hero-scene {
+  text-align: left;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 2rem;
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1240px;
+  gap: 3.5rem;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  flex: 1 1 560px;
+  max-width: 620px;
+  padding: 2.75rem;
+  background: rgba(8, 11, 18, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  box-shadow: 0 30px 65px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+  will-change: transform, opacity;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  background: rgba(0, 242, 254, 0.1);
+  border: 1px solid rgba(0, 242, 254, 0.3);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.hero-badge-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  animation: pulse-dot 2s infinite;
+}
+
+.hero-title {
+  font-size: clamp(2.3rem, 4.2vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+/* Destaque especial do "IA" da palavra GuIA (Trocadilho com Inteligência Artificial) */
+.highlight-ai {
+  display: inline-block;
+  position: relative;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #00f2fe 0%, #00ff87 45%, #ffd166 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.75)) drop-shadow(0 0 32px rgba(0, 255, 135, 0.5));
+  transition: filter var(--transition-fast), transform var(--transition-fast);
+}
+
+.highlight-ai:hover {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 22px rgba(0, 242, 254, 0.9)) drop-shadow(0 0 40px rgba(0, 255, 135, 0.7));
+}
+
+.hero-subtitle {
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.hero-author-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.55rem 1.3rem;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.hero-author-tag:hover {
+  background: rgba(0, 242, 254, 0.08);
+  border-color: var(--accent-cyan);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 16px rgba(0, 242, 254, 0.3);
+}
+
+.hero-author-tag:active {
+  transform: translateY(0);
+}
+
+.hero-author-tag:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
+}
+
+.hero-author-tag strong {
+  color: var(--accent-gold);
+}
+
+/* ==========================================================================
+   PALCO VISUAL DO HERO: GUANABARA + LOGO GAFANHOTO (PARALLAX MULTICAMADA)
+   ========================================================================== */
+
+.hero-visual {
+  flex: 1 1 480px;
+  max-width: 540px;
+  height: 520px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-glow-aura {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.25) 0%, rgba(0, 255, 135, 0.16) 35%, rgba(157, 78, 221, 0.1) 65%, transparent 75%);
+  filter: blur(45px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, opacity;
+}
+
+/* Camada Traseira: Logo Gafanhoto com Parallax Profundo */
+.hero-logo-layer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95%;
+  max-width: 460px;
+  z-index: 1; /* Atrás de Guanabara */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.hero-logo-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: none; /* Efeito de brilho removido da logo conforme solicitado */
+  opacity: 0.95;
+}
+
+/* Camada Frontal: Guanabara com Capuz Gafanhoto */
+.hero-avatar-layer {
+  position: relative;
+  z-index: 2; /* Na frente do Logo Gafanhoto */
+  width: 88%;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  will-change: transform, opacity;
+}
+
+.hero-avatar-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  /* Brilho neon preservado na imagem do Guanabara */
+  filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 25px rgba(0, 242, 254, 0.35)) drop-shadow(0 0 45px rgba(0, 255, 135, 0.2));
+  transition: filter var(--transition-fast);
+}
+
+.hero-avatar-img:hover {
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px rgba(0, 242, 254, 0.5)) drop-shadow(0 0 60px rgba(0, 255, 135, 0.35));
+}
+
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   CENAS DOS PROJETOS (RN-003, RN-004, RN-006, RN-008)
+   ========================================================================== */
+
+.project-scene {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 4rem 8vw;
+}
+
+/* Alternância elegante de layout por projeto */
+.project-scene:nth-child(even) {
+  justify-content: flex-end;
+}
+
+.project-card {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 24px;
+  padding: 2.75rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform var(--transition-smooth), border-color var(--transition-fast), box-shadow var(--transition-smooth);
+  pointer-events: auto;
+}
+
+.project-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-card-highlight);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 242, 254, 0.15);
+}
+
+.project-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 0.85rem;
+}
+
+.project-title {
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.project-description {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.project-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #080b12;
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  box-shadow: 0 10px 25px rgba(0, 242, 254, 0.35);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 242, 254, 0.55);
+  filter: brightness(1.1);
+}
+
+.btn-cta:active {
+  transform: translateY(0);
+}
+
+.btn-cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-fast);
+}
+
+.btn-cta:hover svg {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   TELA FINAL: ENCERRAMENTO E CONTATOS (RN-009 / RN-010)
+   ========================================================================== */
+
+.closing-scene {
+  text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5rem 2rem 4rem;
+}
+
+.closing-container {
+  max-width: 980px;
+  width: 100%;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 28px;
+  padding: 3.5rem 2.5rem;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+  margin-bottom: 3rem;
+}
+
+/* Emblema solto e limpo da marca Gafanhoto no painel de encerramento */
+.closing-brand-emblem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.closing-logo-img {
+  width: auto;
+  height: clamp(75px, 9vw, 96px);
+  max-width: 250px;
+  object-fit: contain;
+  opacity: 0.98;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
+  transition: transform var(--transition-fast);
+}
+
+.closing-logo-img:hover {
+  transform: scale(1.05);
+}
+
+.closing-title {
+  font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.closing-bio {
+  font-size: 1.15rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.6;
+}
+
+.social-links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.social-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent-cyan);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+.social-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 242, 254, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.social-card:hover .social-icon-wrapper {
+  background: var(--accent-cyan);
+  color: #080b12;
+}
+
+.social-info-platform {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+}
+
+.social-info-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.closing-footer {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+.test-health-link {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.95rem;
+  line-height: 1;
+  text-decoration: none;
+  vertical-align: middle;
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+  cursor: pointer;
+}
+
+.test-health-link:hover {
+  transform: scale(1.3) rotate(15deg);
+  filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.8));
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE E DISPOSITIVOS MÓVEIS (MOBILE & TABLET)
+   ========================================================================== */
+
+/* ==========================================================================
+   RESPONSIVIDADE: TELAS COMPACTAS E INTERMEDIÁRIAS (ATÉ 1024px)
+   Cobre tablets, janelas redimensionadas e smartphones
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  #nav-dots {
+    display: none; /* Barra ultrafina no topo garante experiência 100% limpa */
+  }
+
+  .scene {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 2.25rem 1.5rem;
+    padding-top: max(2.25rem, env(safe-area-inset-top));
+    padding-bottom: max(2.25rem, env(safe-area-inset-bottom));
+  }
+
+  /* --- HERO SCENE UNIFICADA (PAINEL SÓLIDO COM IMAGENS INTEGRADAS DENTRO DO CARD) --- */
+  .hero-scene {
+    padding-top: max(2.5rem, env(safe-area-inset-top));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    justify-content: center;
+  }
+
+  .hero-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: 560px;
+    padding: 2rem 1.75rem 1.25rem;
+    border-radius: 26px;
+    background: rgba(8, 11, 18, 0.95); /* Fundo 100% sólido e encorpado */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 30px 65px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-badge {
+    margin-bottom: 0.95rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.85rem, 5vw, 2.4rem);
+    margin-bottom: 0.85rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    margin-bottom: 0.95rem;
+    max-width: 480px;
+  }
+
+  .hero-author-tag {
+    font-size: 0.85rem;
+    padding: 0.45rem 1.15rem;
+    margin-bottom: 0.15rem; /* Encostado com elegância no palco visual */
+  }
+
+  /* Palco Visual integrado DENTRO do painel de conteúdo, puxado para cima */
+  .hero-content .hero-visual,
+  .hero-visual {
+    width: 100%;
+    max-width: 340px;
+    height: 265px;
+    margin: -1.85rem auto -0.5rem; /* Puxado e aproximado com firmeza do autor */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-glow-aura {
+    width: 280px;
+    height: 280px;
+  }
+
+  .hero-logo-layer {
+    max-width: 300px;
+    top: 44%;
+  }
+
+  .hero-avatar-layer {
+    max-width: 275px;
+  }
+
+
+  /* --- CENAS DE PROJETOS (EMPILHAMENTO VERTICAL CINEMATOGRÁFICO) --- */
+  .project-scene,
+  .project-scene:nth-child(even) {
+    flex-direction: column;
+    justify-content: flex-end; /* Card acomodado na base, liberando o terço superior para o Canvas */
+    align-items: center;
+    padding: 1rem 1.5rem max(2.25rem, env(safe-area-inset-bottom));
+  }
+
+  .project-card {
+    width: 100%;
+    max-width: 540px;
+    margin-top: auto;
+    padding: 1.85rem 1.5rem;
+    border-radius: 22px;
+    background: rgba(8, 11, 18, 0.92);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .closing-container {
+    max-width: 640px;
+    padding: 2.75rem 1.75rem;
+    background: rgba(8, 11, 18, 0.92);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+  }
+}
+
+/* Smartphones (<= 768px) - Ajustes Ergonômicos e Escala Aumentada */
+@media (max-width: 768px) {
+  .scene {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .hero-content {
+    max-width: 500px;
+    padding: 1.5rem 1.25rem 0.65rem;
+    border-radius: 22px;
+  }
+
+  .hero-badge {
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-title {
+    font-size: clamp(1.7rem, 5vw, 2.15rem);
+  }
+
+  .hero-subtitle {
+    font-size: 0.92rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-author-tag {
+    margin-bottom: 0.1rem; /* Encostado com elegância no palco visual */
+  }
+
+  .hero-content .hero-visual,
+  .hero-visual {
+    max-width: 300px;
+    height: 245px;
+    margin: -1.75rem auto -0.5rem; /* Puxado para cima aproximando do autor */
+  }
+
+  .hero-glow-aura {
+    width: 250px;
+    height: 250px;
+  }
+
+  .hero-logo-layer {
+    max-width: 265px;
+    top: 43%;
+  }
+
+  .hero-avatar-layer {
+    max-width: 245px;
+  }
+
+  .project-card {
+    max-width: 500px;
+    padding: 1.6rem 1.25rem;
+    border-radius: 20px;
+  }
+
+  .project-title {
+    font-size: clamp(1.45rem, 5vw, 1.85rem);
+  }
+
+  .project-description {
+    font-size: 0.9rem;
+  }
+
+  .btn-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 0.95rem 1.5rem;
+    min-height: 48px;
+  }
+
+  .closing-container {
+    padding: 2.25rem 1.25rem;
+    border-radius: 22px;
+  }
+
+  .closing-title {
+    font-size: clamp(1.75rem, 5vw, 2.3rem);
+  }
+
+  .closing-bio {
+    font-size: 0.92rem;
+  }
+
+  .social-links-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Telas Ultrafinas ou Compactas (ex: iPhone SE, aparelhos < 400px de largura) */
+@media (max-width: 400px) {
+  .hero-content {
+    padding: 1.25rem 1rem 0.5rem;
+  }
+
+  .hero-badge {
+    margin-bottom: 0.65rem;
+  }
+
+  .hero-subtitle {
+    margin-bottom: 0.65rem;
+  }
+
+  .hero-author-tag {
+    margin-bottom: 0.1rem;
+  }
+
+  .hero-content .hero-visual,
+  .hero-visual {
+    max-width: 260px;
+    height: 225px;
+    margin: -1.5rem auto -0.4rem;
+  }
+
+  .hero-glow-aura {
+    width: 215px;
+    height: 215px;
+  }
+
+  .hero-logo-layer {
+    max-width: 230px;
+    top: 43%;
+  }
+
+  .hero-avatar-layer {
+    max-width: 210px;
+  }
+
+  .hero-title {
+    font-size: 1.65rem;
+  }
+
+  .project-card {
+    padding: 1.35rem 1rem;
+  }
+
+  .closing-container {
+    padding: 1.75rem 1rem;
+  }
+}
+
+/* Telas com Altura Reduzida (Modo Paisagem / Landscape em Celulares) */
+@media (max-height: 640px) and (orientation: landscape) {
+  .scene {
+    min-height: 120vh;
+    padding: 2rem 1.5rem;
+  }
+
+  .hero-container {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+
+  .hero-visual {
+    max-width: 240px;
+    height: 220px;
+  }
+
+  .project-scene,
+  .project-scene:nth-child(even) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .project-card {
+    max-width: 48%;
+    margin-top: 0;
+  }
+}

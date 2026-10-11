@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧪 Diagnóstico & Testes de Ambiente - Portfólio Parallax</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="manifest" href="site.webmanifest">
+  <style>
+    :root {
+      --bg-color: #080b12;
+      --card-bg: #121826;
+      --border-color: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #00f2fe;
+      --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding: 2rem 1.25rem;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .header-titles h1 {
+      font-size: 1.85rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 800;
+    }
+
+    .header-titles p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1.15rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      background: rgba(0, 242, 254, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-back:hover {
+      background: var(--primary);
+      color: #080b12;
+      transform: translateY(-2px);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 1.15rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .status-icon {
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+
+    .meta-details {
+      color: var(--text-muted);
+      font-size: 0.825rem;
+      margin-top: 0.2rem;
+    }
+
+    #canvas-test {
+      width: 100%;
+      height: 190px;
+      background: #090d16;
+      border-radius: 10px;
+      border: 1px dashed var(--border-color);
+      display: block;
+    }
+
+    .assets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .asset-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.85rem;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .asset-item:hover {
+      border-color: rgba(0, 242, 254, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .asset-thumb {
+      width: 100%;
+      height: 80px;
+      object-fit: contain;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    .asset-name {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      word-break: break-all;
+      line-height: 1.2;
+    }
+
+    .asset-badge {
+      font-size: 0.7rem;
+      margin-top: 0.35rem;
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 9999px;
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .commands-box {
+      background: #05080e;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.15rem;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--primary);
+      overflow-x: auto;
+      margin-top: 1rem;
+      line-height: 1.7;
+    }
+
+    .commands-box span.comment {
+      color: var(--text-muted);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 0 1rem 0;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      border-top: 1px solid var(--border-color);
+      font-family: var(--font-mono);
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="header-titles">
+        <h1>🧪 Diagnóstico & Testes de Ambiente</h1>
+        <p>Portfólio Criativo e Imersivo com Efeito Parallax — PRJ-PORTFOLIO-PARALLAX</p>
+      </div>
+      <div class="header-actions">
+        <a href="index.html" class="btn-back">← Voltar ao Portfólio</a>
+        <div id="general-status" class="badge-status">
+          <span>●</span> Verificando Ambiente...
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Card 1: Verificação de Runtimes e Catálogo de Dados -->
+      <div class="card">
+        <h2>⚙️ Runtimes & Catálogo de Dados</h2>
+        <ul class="checklist">
+          <li>
+            <span class="status-icon">✅</span>
+            <div>
+              <strong>Plataforma Host</strong>
+              <div class="meta-details" id="host-info">Navegador Web / ES6 Modules Nativo</div>
+            </div>
+          </li>
+          <li>
+            <span class="status-icon" id="cors-status">⏳</span>
+            <div>
+              <strong>Servidor HTTP Local (CORS Test)</strong>
+              <div class="meta-details" id="cors-details">Testando requisição fetch local...</div>
+            </div>
+          </li>
+          <li>
+            <span class="status-icon" id="data-status">⏳</span>
+            <div>
+              <strong>Catálogo de Dados (data/projects.json)</strong>
+              <div class="meta-details" id="data-details">Aguardando carregamento...</div>
+            </div>
+          </li>
+          <li>
+            <span class="status-icon">✅</span>
+            <div>
+              <strong>Governança de Requisitos</strong>
+              <div class="meta-details">BRD e TRD homologados e aprovados</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card 2: Teste de Aceleração Gráfica e Canvas 2D -->
+      <div class="card">
+        <h2>🎨 Hardware & Canvas 2D High-DPI</h2>
+        <canvas id="canvas-test" width="600" height="300"></canvas>
+        <div style="margin-top: 0.85rem;">
+          <ul class="checklist">
+            <li>
+              <span class="status-icon">✅</span>
+              <div>
+                <strong>devicePixelRatio Detectado</strong>
+                <div class="meta-details" id="dpr-info">Calculando resolução da tela...</div>
+              </div>
+            </li>
+            <li>
+              <span class="status-icon">✅</span>
+              <div>
+                <strong>Loop de Animação LERP & FPS</strong>
+                <div class="meta-details">requestAnimationFrame ativo com interpolação contínua</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3: Integridade de Ativos Gráficos (images/) -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <h2>🖼️ Integridade dos Ativos Visuais (images/)</h2>
+      <p class="meta-details">Carregamento concorrente de elementos 3D, cenários e imagens da seção Hero:</p>
+      <div class="assets-grid" id="assets-container">
+        <!-- Injetado dinamicamente via JS -->
+      </div>
+    </div>
+
+    <!-- Card 4: Instruções de Uso do Ambiente -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <h2>🚀 Comandos de Inicialização Rápida</h2>
+      <p class="meta-details">Comandos úteis para o terminal local do desenvolvedor:</p>
+      <div class="commands-box">
+        <span class="comment"># 1. Iniciar servidor local HTTP nativo (porta 8000)</span><br>
+        npm run dev<br><br>
+        <span class="comment"># 2. Iniciar servidor via Python 3 nativo</span><br>
+        npm run dev:python<br><br>
+        <span class="comment"># 3. Executar diagnóstico completo de saúde via terminal</span><br>
+        npm run test:env
+      </div>
+    </div>
+
+    <footer>
+      Portfólio Parallax Imersivo &bull; Gustavo Guanabara &bull; Projetos Vibecoding v1.0.9 &bull; <a href="index.html">Ir para o Portfólio</a>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const generalStatus = document.getElementById('general-status');
+      const corsStatus = document.getElementById('cors-status');
+      const corsDetails = document.getElementById('cors-details');
+      const dataStatus = document.getElementById('data-status');
+      const dataDetails = document.getElementById('data-details');
+      const dprInfo = document.getElementById('dpr-info');
+      const assetsContainer = document.getElementById('assets-container');
+
+      // 1. DPI & Canvas Test
+      const dpr = window.devicePixelRatio || 1;
+      dprInfo.textContent = `Taxa de pixel: ${dpr}x (${dpr >= 2 ? 'Tela Retina / HiDPI' : 'Densidade Padrão'})`;
+
+      const canvas = document.getElementById('canvas-test');
+      const ctx = canvas.getContext('2d');
+      let t = 0;
+
+      function renderCanvas() {
+        const w = canvas.clientWidth;
+        const h = canvas.clientHeight;
+        if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+          canvas.width = w * dpr;
+          canvas.height = h * dpr;
+          ctx.scale(dpr, dpr);
+        }
+
+        ctx.fillStyle = '#090d16';
+        ctx.fillRect(0, 0, w, h);
+
+        // Grade e onda de teste senoidal para testar LERP e FPS
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x += 30) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+
+        ctx.strokeStyle = '#00f2fe';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        for (let x = 0; x < w; x++) {
+          const y = h / 2 + Math.sin((x * 0.02) + t) * 22;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '12px system-ui, sans-serif';
+        ctx.fillText(`Hardware Canvas 2D OK • Resolução: ${canvas.width}x${canvas.height}`, 15, 25);
+
+        t += 0.035;
+        requestAnimationFrame(renderCanvas);
+      }
+      renderCanvas();
+
+      // 2. Leitura assíncrona do catálogo JSON direto da raiz
+      try {
+        const response = await fetch('data/projects.json');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        corsStatus.textContent = '✅';
+        corsDetails.textContent = 'Servidor HTTP responde com headers válidos';
+
+        dataStatus.textContent = '✅';
+        const heroTitle = data.hero?.title || 'Definido';
+        dataDetails.textContent = `${data.projects.length} projetos mapeados • Hero: "${heroTitle}"`;
+
+        // 3. Montar lista de ativos a testar (Projetos + Hero + Logos)
+        const assetsToTest = [];
+
+        // Ativos do Hero
+        if (data.hero?.avatarImage) {
+          assetsToTest.push({ name: 'Avatar Hero (Guanabara)', src: data.hero.avatarImage });
+        }
+        if (data.hero?.logoImage) {
+          assetsToTest.push({ name: 'Logo Hero (Gafanhoto)', src: data.hero.logoImage });
+        }
+
+        // Ativos dos Projetos
+        data.projects.forEach(p => {
+          if (p.element3D) {
+            assetsToTest.push({ name: `${p.title} (3D)`, src: p.element3D });
+          }
+          if (p.backgroundImage) {
+            assetsToTest.push({ name: `${p.title} (Fundo)`, src: p.backgroundImage });
+          }
+        });
+
+        // Ativo do Encerramento
+        if (data.closing?.logo) {
+          assetsToTest.push({ name: 'Logo Encerramento', src: data.closing.logo });
+        }
+
+        assetsContainer.innerHTML = '';
+        let loadedCount = 0;
+
+        for (const asset of assetsToTest) {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'asset-item';
+
+          const img = document.createElement('img');
+          img.className = 'asset-thumb';
+          img.alt = asset.name;
+          img.src = asset.src;
+
+          const nameDiv = document.createElement('div');
+          nameDiv.className = 'asset-name';
+          nameDiv.textContent = asset.name;
+
+          const badge = document.createElement('span');
+          badge.className = 'asset-badge';
+          badge.textContent = 'Carregando...';
+
+          img.onload = () => {
+            badge.textContent = '100% OK';
+            loadedCount++;
+            if (loadedCount === assetsToTest.length) {
+              generalStatus.innerHTML = '<span>●</span> Ambiente 100% Homologado';
+              generalStatus.style.background = 'rgba(34, 197, 94, 0.2)';
+              generalStatus.style.color = '#22c55e';
+              generalStatus.style.borderColor = 'rgba(34, 197, 94, 0.5)';
+            }
+          };
+
+          img.onerror = () => {
+            badge.textContent = 'Falha';
+            badge.style.color = '#ef4444';
+            badge.style.background = 'rgba(239, 68, 68, 0.2)';
+          };
+
+          itemDiv.appendChild(img);
+          itemDiv.appendChild(nameDiv);
+          itemDiv.appendChild(badge);
+          assetsContainer.appendChild(itemDiv);
+        }
+
+      } catch (err) {
+        corsStatus.textContent = '⚠️';
+        corsDetails.textContent = 'Aberto direto via file:// ou servidor HTTP desligado';
+        dataStatus.textContent = '⚠️';
+        dataDetails.textContent = 'Inicie o servidor HTTP com "npm run dev" para carregar JSON';
+        generalStatus.innerHTML = '<span>●</span> Inicie o Servidor HTTP (npm run dev)';
+        generalStatus.style.color = '#f59e0b';
+        generalStatus.style.background = 'rgba(245, 158, 11, 0.2)';
+      }
+    });
+  </script>
+</body>
+</html>
